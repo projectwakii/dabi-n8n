@@ -22,3 +22,12 @@ packages/**/.turbo
 CHANGELOG-*.md
 *.mdx
 build-storybook.log
+
+# n8n specific ignores
+data/.n8n/*.db
+data/.n8n/*.db-journal
+data/.n8n/stats.json
+
+# Keep n8n workflows and credentials
+!data/.n8n/workflows
+!data/.n8n/credentials
