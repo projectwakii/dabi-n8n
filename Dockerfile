@@ -1,40 +1,14 @@
-# Use Node.js LTS
-FROM node:20-alpine
-
-# Install build dependencies
-RUN apk add --no-cache \
-    python3 \
-    make \
-    g++ \
-    gcc \
-    sqlite-dev \
-    python3-dev \
-    git
+# Use the official n8n image
+FROM docker.n8n.io/n8nio/n8n
 
 # Set working directory
 WORKDIR /app
 
-# Install pnpm
-RUN npm install -g pnpm
-
-# Copy all necessary files
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY patches ./patches
-COPY packages ./packages
-COPY scripts ./scripts
-COPY tsconfig*.json ./
-COPY turbo.json ./
-COPY .npmrc ./
-COPY vitest.workspace.ts ./
-
-# Install dependencies
-RUN pnpm install
-
-# Build the application
-RUN pnpm build
-
-# Expose the port (adjust if needed)
+# Expose port for n8n
 EXPOSE 5678
 
-# Start the application
-CMD ["pnpm", "start"] 
+# Mount a volume for persistent data storage
+VOLUME ["/home/node/.n8n"]
+
+# Start n8n automatically
+CMD ["n8n"]
